@@ -1,0 +1,51 @@
+#Importing Libraries
+
+import os
+import numpy as np
+import pandas as pd
+from sklearn import datasets , linear_model import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+
+# Exploring the data
+filepath = "heart_failure_clinical_records_dataset.csv" data = pd.read_csv(filepath)
+data.head(10)
+
+# Ceaning the data
+del data["time"]
+del data['ejection_fraction'] 
+data.head(5)
+
+# Exploratory Data Analysis(EDA)
+data.describe()
+data.info()
+
+# Relation between Age and death event 
+sns.kdeplot(data = data, x = "age", hue = "DEATH_EVENT", common_norm = False, shade = True)
+
+# Relation between smoking and death event 
+sns.kdeplot(data = data, x = 'smoking' , hue = "DEATH_EVENT", common_norm = False, shade = True)
+
+# Relation between serum_creatinine and death event
+sns.kdeplot(data= data, x='serum_creatinine',hue ="DEATH_EVENT", common_norm = False, shade = True)
+
+# Relation between anaemia and death event
+sns.kdeplot(data= data, y='anaemia',hue ="DEATH_EVENT", common_norm = False, shade = True)
+ 
+ # Relation between creatinine_phosphokinase and death event.
+sns.kdeplot(data =data, x = "creatinine_phosphokinase" , hue = "DEATH_EVENT", common_norm = False , shade = True )
+
+# Relation between Blood Pressure and death event.
+sns.barplot(data=data, x= "DEATH_EVENT", y = "high_blood_pressure")
+
+# Lets see an pairplot:
+data = data.copy()
+data.loc[data.DEATH_EVENT == 0, 'DEATH_EVENT'] = "Alive"
+data.loc[data.DEATH_EVENT == 1, 'DEATH_EVENT'] = "Not Alive" sns.pairplot(data=data[['age','creatinine_phosphokinase','anaemia','serum_creatinine','serum_sodium','DEATH_EVENT']],
+hue='DEATH_EVENT');
+
+# matrix corelation
+plt.figure(figsize=(20,10)) 
+sns.heatmap(data.corr(), annot = True) 
+plt.title('Correlation Matrix ')
+
